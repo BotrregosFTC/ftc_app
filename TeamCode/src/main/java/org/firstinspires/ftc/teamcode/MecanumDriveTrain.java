@@ -45,7 +45,7 @@ import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
  * The code is structured as a LinearOpMode
  *
  * This particular OpMode executes a POV Game style Teleop for a MecanumDrive Bot.
- * This opmode uses the left stick to control the axial movement, while the right stick controls the rotation
+ * This opmode uses the left stick to control the axial movement, while the right stick controls the rotation.
 
  */
 
