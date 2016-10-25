@@ -48,26 +48,13 @@ import com.qualcomm.robotcore.util.Range;
  * All device access is managed through the HardwarePushbot class.
  *
  * This particular OpMode executes a basic Tank Drive Teleop for a PushBot
- * It raises and lowers the claw using the Gampad Y and A buttons respectively.
+ * It raises and lowers the claw using the Gamepad Y and A buttons respectively.
  * It also opens and closes the claws slowly using the left and right Bumper buttons.
  *
  * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="Pushbot: Teleop Tank", group="Pushbot")
-@Disabled
-public class PushbotTeleopTank_Iterative extends OpMode{
-
-    /* Declare OpMode members. */
-    HardwarePushbot robot       = new HardwarePushbot(); // use the class created to define a Pushbot's hardware
-                                                         // could also use HardwarePushbotMatrix class.
-    double          clawOffset  = 0.0 ;                  // Servo mid position
-    final double    CLAW_SPEED  = 0.02 ;                 // sets rate to move servo
-
-
-    /*
-     * Code to run ONCE when the driver hits INIT
      */
     @Override
     public void init() {
@@ -75,14 +62,27 @@ public class PushbotTeleopTank_Iterative extends OpMode{
          * The init() method of the hardware class does all the work here
          */
         robot.init(hardwareMap);
+        @TeleOp(name="Pushbot: Teleop Tank", group="Pushbot")
+        @Disabled
+        public class PushbotTeleopTank_Iterative extends OpMode{
 
-        // Send telemetry message to signify robot waiting;
-        telemetry.addData("Say", "Hello Driver");    //
-    }
+            /* Declare OpMode members. */
+            HardwarePushbot robot       = new HardwarePushbot(); // use the class created to define a Pushbot's hardware
+            // could also use HardwarePushbotMatrix class.
+            double          clawOffset  = 0.0 ;                  // Servo mid position
+            final double    CLAW_SPEED  = 0.02 ;                 // sets rate to move servo
 
-    /*
-     * Code to run REPEATEDLY after the driver hits INIT, but before they hit PLAY
-     */
+
+            /*
+             * Code to run ONCE when the driver hits INIT
+
+                // Send telemetry message to signify robot waiting;
+                telemetry.addData("Say", "Hello Driver");    //
+            }
+
+            /*
+             * Code to run REPEATEDLY after the driver hits INIT, but before they hit PLAY
+             */
     @Override
     public void init_loop() {
     }
