@@ -22,6 +22,10 @@ public class HardwareMecanumDriveTrain
     public DcMotor  backRightMotor  = null;
     public DcMotor  frontLeftMotor    = null;
     public DcMotor  backLeftMotor    = null;
+    public Servo servo= null;
+
+    public double Arm_Min = 0.2;
+    public double Arm_Max = 0.8;
 
     /* local OpMode members. */
     HardwareMap hwMap           =  null;
@@ -44,6 +48,7 @@ public class HardwareMecanumDriveTrain
         backRightMotor  = hwMap.dcMotor.get("br");
         frontLeftMotor   = hwMap.dcMotor.get("fl");
         backLeftMotor  = hwMap.dcMotor.get("bl");
+        servo = hwMap.servo.get("servo");
 
         frontRightMotor.setDirection(DcMotor.Direction.FORWARD);
         backRightMotor.setDirection(DcMotor.Direction.FORWARD);
@@ -55,6 +60,7 @@ public class HardwareMecanumDriveTrain
         backRightMotor.setPower(0);
         frontLeftMotor.setPower(0);
         backLeftMotor.setPower(0);
+        servo.setPosition(0);
 
 
         // Set all motors to run without encoders.

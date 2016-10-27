@@ -71,6 +71,7 @@ public class MecanumDriveTrain extends LinearOpMode
         double max;
         double turbo;
 
+
         /* Initialize the hardware variables.
          * The init() method of the hardware class does all the work here
          */
@@ -86,6 +87,13 @@ public class MecanumDriveTrain extends LinearOpMode
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive())
         {
+            if (gamepad1.a){
+                robotDrive.servo.setPosition(robotDrive.Arm_Max);
+            }
+            else if (gamepad1.x){
+                robotDrive.servo.setPosition(robotDrive.Arm_Min);
+            }
+
             //Sets the turbo mode for the motors to normal when the right bumper is not pressed
             // or to max speed (turbo) when it is pressed
             if (gamepad1.right_bumper)
