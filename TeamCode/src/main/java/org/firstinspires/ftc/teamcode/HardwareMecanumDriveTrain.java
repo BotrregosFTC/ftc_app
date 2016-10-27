@@ -24,8 +24,8 @@ public class HardwareMecanumDriveTrain
     public DcMotor  backLeftMotor    = null;
     public Servo servo= null;
 
-    public double Arm_Min = 0.2;
-    public double Arm_Max = 0.8;
+    public double Arm_Min = 0.1;
+    public double Arm_Max = .9;
 
     /* local OpMode members. */
     HardwareMap hwMap           =  null;
