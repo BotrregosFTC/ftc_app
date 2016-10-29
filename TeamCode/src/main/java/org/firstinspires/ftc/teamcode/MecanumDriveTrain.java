@@ -32,6 +32,10 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package org.firstinspires.ftc.teamcode;
 
+import android.app.Activity;
+import android.graphics.Color;
+import android.view.View;
+
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -70,12 +74,19 @@ public class MecanumDriveTrain extends LinearOpMode
         double backLeftPower;
         double max;
         double turbo;
+        float hsvValues[] = {0F,0F,0F};
+        final float values[] = hsvValues;
+        final View relativeLayout = ((Activity) hardwareMap.appContext).findViewById(com.qualcomm.ftcrobotcontroller.R.id.RelativeLayout);
+        boolean bPrevState = false;
+        boolean bCurrState = false;
+        boolean bLedOn = true;
 
 
         /* Initialize the hardware variables.
          * The init() method of the hardware class does all the work here
          */
         robotDrive.init(hardwareMap);
+        robotDrive.colorSensor.enableLed(bLedOn);
 
         // Send telemetry message to signify robot waiting;
         telemetry.addData("here comes dat bot", "Oh hey, waddup");
@@ -87,6 +98,37 @@ public class MecanumDriveTrain extends LinearOpMode
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive())
         {
+            bCurrState = gamepad1.y;
+
+            if ((bCurrState == true) && (bCurrState != bPrevState))  {
+
+                // button is transitioning to a pressed state. So Toggle LED
+                bLedOn = !bLedOn;
+                robotDrive.colorSensor.enableLed(bLedOn);
+            }
+
+            // update previous state variable.
+            bPrevState = bCurrState;
+
+            // convert the RGB values to HSV values.
+            Color.RGBToHSV(robotDrive.colorSensor.red() * 8, robotDrive.colorSensor.green() * 8, robotDrive.colorSensor.blue() * 8, hsvValues);
+
+            telemetry.addData("LED", bLedOn ? "On" : "Off");
+            telemetry.addData("Clear", robotDrive.colorSensor.alpha());
+            telemetry.addData("Red  ", robotDrive.colorSensor.red());
+            telemetry.addData("Green", robotDrive.colorSensor.green());
+            telemetry.addData("Blue ", robotDrive.colorSensor.blue());
+            telemetry.addData("Hue", hsvValues[0]);
+
+            // change the background color to match the color detected by the RGB sensor.
+            // pass a reference to the hue, saturation, and value array as an argument
+            // to the HSVToColor method.
+            relativeLayout.post(new Runnable() {
+                public void run() {
+                    relativeLayout.setBackgroundColor(Color.HSVToColor(0xff, values));
+                }
+            });
+
             if (gamepad1.a){
                 robotDrive.servo.setPosition(robotDrive.Arm_Max);
             }
