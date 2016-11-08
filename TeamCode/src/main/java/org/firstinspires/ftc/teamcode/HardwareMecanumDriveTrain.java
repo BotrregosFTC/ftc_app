@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -25,6 +26,8 @@ public class HardwareMecanumDriveTrain
     public DcMotor  backLeftMotor    = null;
     public Servo servo = null;
     public ColorSensor colorSensor;
+    public ModernRoboticsI2cGyro gyro;   // Hardware Device Object
+
 
     public double Arm_Min = 0.1;
     public double Arm_Max = .9;
@@ -52,6 +55,7 @@ public class HardwareMecanumDriveTrain
         backLeftMotor  = hwMap.dcMotor.get("bl");
         servo = hwMap.servo.get("servo");
         colorSensor = hwMap.colorSensor.get("sensor_color");
+        gyro = (ModernRoboticsI2cGyro)hwMap.gyroSensor.get("gyro");
 
         frontRightMotor.setDirection(DcMotor.Direction.FORWARD);
         backRightMotor.setDirection(DcMotor.Direction.FORWARD);
