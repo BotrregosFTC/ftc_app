@@ -60,7 +60,9 @@ public class MecanumDriveTrain extends LinearOpMode
 {
 
     /* Declare OpMode members. */
-    HardwareMecanumDriveTrain robotDrive           = new HardwareMecanumDriveTrain();   // Use a Mecanum Drive Train's hardware
+    HardwareMecanumWheels robotDrive           = new HardwareMecanumWheels();   // Use a Mecanum Drive Train's hardware
+    HardwareColorSensor colorSensor = new HardwareColorSensor();
+    HardwareServo Servo = new HardwareServo ();
 
     @Override
     public void runOpMode() throws InterruptedException
@@ -86,10 +88,10 @@ public class MecanumDriveTrain extends LinearOpMode
          * The init() method of the hardware class does all the work here
          */
         robotDrive.init(hardwareMap);
-        robotDrive.colorSensor.enableLed(bLedOn);
+        colorSensor.colorSensor.enableLed(bLedOn);
 
         // Send telemetry message to signify robot waiting;
-        telemetry.addData("HOLA");
+        telemetry.addData ("hola");
         telemetry.update();
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
@@ -103,20 +105,20 @@ public class MecanumDriveTrain extends LinearOpMode
 
                 // button is transitioning to a pressed state. So Toggle LED
                 bLedOn = !bLedOn;
-                robotDrive.colorSensor.enableLed(bLedOn);
+                colorSensor.colorSensor.enableLed(bLedOn);
             }
 
             // update previous state variable.
             bPrevState = bCurrState;
 
             // convert the RGB values to HSV values.
-            Color.RGBToHSV(robotDrive.colorSensor.red() * 8, robotDrive.colorSensor.green() * 8, robotDrive.colorSensor.blue() * 8, hsvValues);
+            Color.RGBToHSV(colorSensor.colorSensor.red() * 8, colorSensor.colorSensor.green() * 8, colorSensor.colorSensor.blue() * 8, hsvValues);
 
             telemetry.addData("LED", bLedOn ? "On" : "Off");
-            telemetry.addData("Clear", robotDrive.colorSensor.alpha());
-            telemetry.addData("Red  ", robotDrive.colorSensor.red());
-            telemetry.addData("Green", robotDrive.colorSensor.green());
-            telemetry.addData("Blue ", robotDrive.colorSensor.blue());
+            telemetry.addData("Clear", colorSensor.colorSensor.alpha());
+            telemetry.addData("Red  ", colorSensor.colorSensor.red());
+            telemetry.addData("Green", colorSensor.colorSensor.green());
+            telemetry.addData("Blue ", colorSensor.colorSensor.blue());
             telemetry.addData("Hue", hsvValues[0]);
 
             // change the background color to match the color detected by the RGB sensor.
@@ -129,10 +131,10 @@ public class MecanumDriveTrain extends LinearOpMode
             });
 
             if (gamepad1.a){
-                robotDrive.servo.setPosition(robotDrive.Arm_Max);
+                Servo.servo.setPosition(Servo.Arm_Max);
             }
             else if (gamepad1.x){
-                robotDrive.servo.setPosition(robotDrive.Arm_Min);
+                Servo.servo.setPosition(Servo.Arm_Min);
             }
 
             //Sets the turbo mode for the motors to normal when the right bumper is not pressed

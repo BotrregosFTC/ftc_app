@@ -1,13 +1,8 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
-import com.qualcomm.robotcore.hardware.AnalogSensor;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.GyroSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.LegacyModule;
-import com.qualcomm.robotcore.hardware.LegacyModulePortDeviceImpl;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -22,15 +17,10 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Motor channel:  Back Left Motor:        "bl"
  *
  */
-public class HardwareMecanumDriveTrain
+public class HardwareServo
 {
     /* Public OpMode members. */
-    public DcMotor  frontRightMotor   = null;
-    public DcMotor  backRightMotor  = null;
-    public DcMotor  frontLeftMotor    = null;
-    public DcMotor  backLeftMotor    = null;
     public Servo servo = null;
-    public ColorSensor colorSensor;
 
     public double Arm_Min = 0.1;
     public double Arm_Max = .9;
@@ -41,7 +31,7 @@ public class HardwareMecanumDriveTrain
     private ElapsedTime period  = new ElapsedTime();
 
     /* Constructor */
-    public HardwareMecanumDriveTrain()
+    public HardwareServo()
     {
     }
 
@@ -53,30 +43,9 @@ public class HardwareMecanumDriveTrain
         hwMap = ahwMap;
 
         // Define and Initialize Motors
-        frontRightMotor   = hwMap.dcMotor.get("fr");
-        backRightMotor  = hwMap.dcMotor.get("br");
-        frontLeftMotor   = hwMap.dcMotor.get("fl");
-        backLeftMotor  = hwMap.dcMotor.get("bl");
         servo = hwMap.servo.get("servo");
-        colorSensor = hwMap.colorSensor.get("sensor_color");
 
-        frontRightMotor.setDirection(DcMotor.Direction.FORWARD);
-        backRightMotor.setDirection(DcMotor.Direction.FORWARD);
-        frontLeftMotor.setDirection(DcMotor.Direction.REVERSE);// Set to REVERSE to normalize movement
-        backLeftMotor.setDirection(DcMotor.Direction.REVERSE);// Set to REVERSE to normalize movement
-
-        // Set all motors to zero power
-        frontRightMotor.setPower(0);
-        backRightMotor.setPower(0);
-        frontLeftMotor.setPower(0);
-        backLeftMotor.setPower(0);
         servo.setPosition(0);
-
-        // Set all motors to run without encoders.
-        frontRightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        backRightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        frontLeftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        backLeftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     /***
