@@ -81,12 +81,6 @@ public class MecanumDriveTrain extends LinearOpMode
         boolean bPrevState = false;
         boolean bCurrState = false;
         boolean bLedOn = true;
-        int xVal, yVal, zVal = 0;     // Gyro rate Values
-        int heading = 0;              // Gyro integrated heading
-        int angleZ = 0;
-        boolean lastResetState = false;
-        boolean curResetState  = false;
-
 
         /* Initialize the hardware variables.
          * The init() method of the hardware class does all the work here
@@ -95,16 +89,7 @@ public class MecanumDriveTrain extends LinearOpMode
         robotDrive.colorSensor.enableLed(bLedOn);
 
         // Send telemetry message to signify robot waiting;
-        telemetry.addData(">", "Gyro Calibrating. Do Not move!");
-        telemetry.update();
-        robotDrive.gyro.calibrate();
-
-        while (!isStopRequested() && robotDrive.gyro.isCalibrating())  {
-            sleep(50);
-            idle();
-        }
-
-        telemetry.addData(">", "Gyro Calibrated.  Press Start.");
+        telemetry.addData("HOLA");
         telemetry.update();
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
@@ -113,31 +98,6 @@ public class MecanumDriveTrain extends LinearOpMode
         while (opModeIsActive())
         {
             bCurrState = gamepad1.y;
-            curResetState = (gamepad1.a && gamepad1.b);
-
-            if(curResetState && !lastResetState)  {
-                robotDrive.gyro.resetZAxisIntegrator();
-            }
-            lastResetState = curResetState;
-
-            // get the x, y, and z values (rate of change of angle).
-            xVal = robotDrive.gyro.rawX();
-            yVal = robotDrive.gyro.rawY();
-            zVal = robotDrive.gyro.rawZ();
-
-            // get the heading info.
-            // the Modern Robotics' gyro sensor keeps
-            // track of the current heading for the Z axis only.
-            heading = robotDrive.gyro.getHeading();
-            angleZ  = robotDrive.gyro.getIntegratedZValue();
-
-            telemetry.addData(">", "Press A & B to reset Heading.");
-            telemetry.addData("0", "Heading %03d", heading);
-            telemetry.addData("1", "Int. Ang. %03d", angleZ);
-            telemetry.addData("2", "X av. %03d", xVal);
-            telemetry.addData("3", "Y av. %03d", yVal);
-            telemetry.addData("4", "Z av. %03d", zVal);
-            telemetry.update();
 
             if ((bCurrState == true) && (bCurrState != bPrevState))  {
 
