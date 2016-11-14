@@ -21,6 +21,15 @@ public class HardwareMecanumWheels
     public DcMotor  backRightMotor  = null;
     public DcMotor  frontLeftMotor    = null;
     public DcMotor  backLeftMotor    = null;
+    public double y1;
+    public double x1;
+    public double x2;
+    public double frontRightPower;
+    public double backRightPower;
+    public double frontLeftPower;
+    public double backLeftPower;
+    public double max;
+    public double turbo;
 
     /* local OpMode members. */
     HardwareMap hwMap           =  null;

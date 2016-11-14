@@ -63,35 +63,20 @@ public class MecanumDriveTrain extends LinearOpMode
     HardwareMecanumWheels robotDrive           = new HardwareMecanumWheels();   // Use a Mecanum Drive Train's hardware
     HardwareColorSensor colorSensor = new HardwareColorSensor();
     HardwareServo Servo = new HardwareServo ();
+    HardwareOpticalDistanceSensor distanceSensor = new HardwareOpticalDistanceSensor();
 
     @Override
     public void runOpMode() throws InterruptedException
     {
         // Declares variables used on the program
-        double y1;
-        double x1;
-        double x2;
-        double frontRightPower;
-        double backRightPower;
-        double frontLeftPower;
-        double backLeftPower;
-        double max;
-        double turbo;
-        float hsvValues[] = {0F,0F,0F};
-        final float values[] = hsvValues;
-        final View relativeLayout = ((Activity) hardwareMap.appContext).findViewById(com.qualcomm.ftcrobotcontroller.R.id.RelativeLayout);
-        boolean bPrevState = false;
-        boolean bCurrState = false;
-        boolean bLedOn = true;
-
-        /* Initialize the hardware variables.
+         /* Initialize the hardware variables.
          * The init() method of the hardware class does all the work here
          */
         robotDrive.init(hardwareMap);
-        colorSensor.colorSensor.enableLed(bLedOn);
+        colorSensor.colorSensor.enableLed(colorSensor.bLedOn);
 
         // Send telemetry message to signify robot waiting;
-        telemetry.addData ("hola");
+        telemetry.addData ("Adry es la mejor del universo", "");
         telemetry.update();
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
@@ -99,34 +84,41 @@ public class MecanumDriveTrain extends LinearOpMode
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive())
         {
-            bCurrState = gamepad1.y;
+           colorSensor.bCurrState = gamepad1.y;
 
-            if ((bCurrState == true) && (bCurrState != bPrevState))  {
+            if ((colorSensor.bCurrState == true) && (colorSensor.bCurrState != colorSensor.bPrevState))  {
 
                 // button is transitioning to a pressed state. So Toggle LED
-                bLedOn = !bLedOn;
-                colorSensor.colorSensor.enableLed(bLedOn);
+                colorSensor.bLedOn = !colorSensor.bLedOn;
+                colorSensor.colorSensor.enableLed(colorSensor.bLedOn);
             }
 
             // update previous state variable.
-            bPrevState = bCurrState;
+            colorSensor.bPrevState = colorSensor.bCurrState;
 
             // convert the RGB values to HSV values.
-            Color.RGBToHSV(colorSensor.colorSensor.red() * 8, colorSensor.colorSensor.green() * 8, colorSensor.colorSensor.blue() * 8, hsvValues);
+            Color.RGBToHSV(colorSensor.colorSensor.red() * 8, colorSensor.colorSensor.green() * 8, colorSensor.colorSensor.blue() * 8, colorSensor.hsvValues);
 
-            telemetry.addData("LED", bLedOn ? "On" : "Off");
+            telemetry.addData("LED", colorSensor.bLedOn ? "On" : "Off");
             telemetry.addData("Clear", colorSensor.colorSensor.alpha());
             telemetry.addData("Red  ", colorSensor.colorSensor.red());
             telemetry.addData("Green", colorSensor.colorSensor.green());
             telemetry.addData("Blue ", colorSensor.colorSensor.blue());
-            telemetry.addData("Hue", hsvValues[0]);
+            telemetry.addData("Hue", colorSensor.hsvValues[0]);
+
+            telemetry.addData("Raw",    distanceSensor.odsSensor.getRawLightDetected());
+            telemetry.addData("Normal", distanceSensor.odsSensor.getLightDetected());
+
+            telemetry.update();
+
 
             // change the background color to match the color detected by the RGB sensor.
             // pass a reference to the hue, saturation, and value array as an argument
             // to the HSVToColor method.
-            relativeLayout.post(new Runnable() {
+            colorSensor.relativeLayout.post(new Runnable() {
                 public void run() {
-                    relativeLayout.setBackgroundColor(Color.HSVToColor(0xff, values));
+
+                    colorSensor.relativeLayout.setBackgroundColor(Color.HSVToColor(0xff, colorSensor.values));
                 }
             });
 
@@ -141,45 +133,45 @@ public class MecanumDriveTrain extends LinearOpMode
             // or to max speed (turbo) when it is pressed
             if (gamepad1.right_bumper)
             {
-                turbo = 1;
+                robotDrive.turbo = 1;
             }
             else
-                turbo = .2;
+                robotDrive.turbo = .2;
             // Sets the joystick values to variables for better math understanding
             // The Y axis goes
-            y1  = gamepad1.left_stick_y;
-            x1  = gamepad1.left_stick_x;
-            x2  = gamepad1.right_stick_x;
+            robotDrive.y1  = gamepad1.left_stick_y;
+            robotDrive.x1  = gamepad1.left_stick_x;
+            robotDrive.x2  = gamepad1.right_stick_x;
 
             // sets the math necessary to control the motors to variables
             // The left stick controls the axial movement
             // The right sick controls the rotation
-            frontRightPower     = y1 - x2 - x1;
-            backRightPower      = y1 - x2 + x1;
-            frontLeftPower      = y1 + x2 + x1;
-            backLeftPower       = y1 + x2 - x1;
+            robotDrive.frontRightPower     = robotDrive.y1 - robotDrive.x2 - robotDrive.x1;
+            robotDrive.backRightPower      = robotDrive.y1 - robotDrive.x2 + robotDrive.x1;
+            robotDrive.frontLeftPower      = robotDrive.y1 + robotDrive.x2 + robotDrive.x1;
+            robotDrive.backLeftPower       = robotDrive.y1 + robotDrive.x2 - robotDrive.x1;
 
             // Normalize the values so neither exceed +/- 1.0
-            max =  Math.max(Math.abs(frontRightPower), Math.max(Math.abs(backRightPower),
-                    Math.max(Math.abs(frontLeftPower), Math.abs(backLeftPower))));
-            if (max > 1.0)
+            robotDrive.max =  Math.max(Math.abs(robotDrive.frontRightPower), Math.max(Math.abs(robotDrive.backRightPower),
+                    Math.max(Math.abs(robotDrive.frontLeftPower), Math.abs(robotDrive.backLeftPower))));
+            if (robotDrive.max > 1.0)
             {
-                frontRightPower     /= max;
-                backRightPower      /= max;
-                frontLeftPower      /= max;
-                backLeftPower       /= max;
+                robotDrive.frontRightPower     /= robotDrive.max;
+                robotDrive.backRightPower      /= robotDrive.max;
+                robotDrive.frontLeftPower      /= robotDrive.max;
+                robotDrive.backLeftPower       /= robotDrive.max;
             }
 
             // sets the speed for the motros with the turbo multiplier
-            frontRightPower     *= turbo;
-            backRightPower      *= turbo;
-            frontLeftPower      *= turbo;
-            backLeftPower       *= turbo;
+            robotDrive.frontRightPower     *= robotDrive.turbo;
+            robotDrive.backRightPower      *= robotDrive.turbo;
+            robotDrive.frontLeftPower      *= robotDrive.turbo;
+            robotDrive.backLeftPower       *= robotDrive.turbo;
 
-            robotDrive.frontRightMotor.setPower(frontRightPower);
-            robotDrive.backRightMotor.setPower(backRightPower);
-            robotDrive.frontLeftMotor.setPower(frontLeftPower);
-            robotDrive.backLeftMotor.setPower(backLeftPower);
+            robotDrive.frontRightMotor.setPower(robotDrive.frontRightPower);
+            robotDrive.backRightMotor.setPower(robotDrive.backRightPower);
+            robotDrive.frontLeftMotor.setPower(robotDrive.frontLeftPower);
+            robotDrive.backLeftMotor.setPower(robotDrive.backLeftPower);
 
             // Send telemetry message to signify robot running;
             telemetry.update();

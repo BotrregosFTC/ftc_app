@@ -1,5 +1,8 @@
 package org.firstinspires.ftc.teamcode;
 
+import android.app.Activity;
+import android.view.View;
+
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -8,10 +11,17 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class HardwareColorSensor
 {
     /* Public OpMode members. */
+    HardwareMap hwMap           =  null;
+
     public ColorSensor colorSensor;
+    public float hsvValues[] = {0F,0F,0F};
+    public final float values[] = hsvValues;
+    public final View relativeLayout = ((Activity) hwMap.appContext).findViewById(com.qualcomm.ftcrobotcontroller.R.id.RelativeLayout);
+    public boolean bPrevState = false;
+    public boolean bCurrState = false;
+    public boolean bLedOn = true;
 
     /* local OpMode members. */
-    HardwareMap hwMap           =  null;
     private ElapsedTime period  = new ElapsedTime();
 
     /* Constructor */
