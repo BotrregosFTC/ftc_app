@@ -40,6 +40,8 @@ import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotorController;
+import com.qualcomm.robotcore.util.Hardware;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
@@ -62,8 +64,9 @@ public class MecanumDriveTrain extends LinearOpMode
     /* Declare OpMode members. */
     HardwareMecanumWheels robotDrive           = new HardwareMecanumWheels();   // Use a Mecanum Drive Train's hardware
     HardwareColorSensor colorSensor = new HardwareColorSensor();
-    HardwareServo Servo = new HardwareServo ();
+    HardwareServo servo = new HardwareServo ();
     HardwareOpticalDistanceSensor distanceSensor = new HardwareOpticalDistanceSensor();
+    HardwareBrazo brazo = new HardwareBrazo();
 
     @Override
     public void runOpMode() throws InterruptedException
@@ -73,6 +76,11 @@ public class MecanumDriveTrain extends LinearOpMode
          * The init() method of the hardware class does all the work here
          */
         robotDrive.init(hardwareMap);
+        colorSensor.init(hardwareMap);
+        servo.init(hardwareMap);
+        distanceSensor.init(hardwareMap);
+        brazo.init(hardwareMap);
+
         colorSensor.colorSensor.enableLed(colorSensor.bLedOn);
 
         // Send telemetry message to signify robot waiting;
@@ -123,10 +131,10 @@ public class MecanumDriveTrain extends LinearOpMode
             });
 
             if (gamepad1.a){
-                Servo.servo.setPosition(Servo.Arm_Max);
+                servo.servo.setPosition(servo.Arm_Max);
             }
             else if (gamepad1.x){
-                Servo.servo.setPosition(Servo.Arm_Min);
+                servo.servo.setPosition(servo.Arm_Min);
             }
 
             //Sets the turbo mode for the motors to normal when the right bumper is not pressed
@@ -179,5 +187,10 @@ public class MecanumDriveTrain extends LinearOpMode
             // Pause for metronome tick.  40 mS each cycle = update 25 times a second.
             robotDrive.waitForTick(40);
         }
+    }
+    public void DriveForwardDistance (double power, int distance){
+        brazo.brazo.setMode(DcMotorController.RunMode.);
+
+
     }
 }
