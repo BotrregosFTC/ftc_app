@@ -84,7 +84,7 @@ public class MecanumDriveTrain extends LinearOpMode
         colorSensor.colorSensor.enableLed(colorSensor.bLedOn);
 
         // Send telemetry message to signify robot waiting;
-        telemetry.addData ("Adry es la mejor del universo", "");
+        telemetry.addData ("Adry: Adry es la mejor del universo", "saul: no, no lo es");
         telemetry.update();
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
