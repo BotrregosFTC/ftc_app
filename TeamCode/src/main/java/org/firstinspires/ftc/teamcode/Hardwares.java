@@ -1,10 +1,9 @@
 package org.firstinspires.ftc.teamcode;
 
-
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
-
+import com.qualcomm.robotcore.hardware.Servo;
 
 /**
  * This is NOT an opmode.
@@ -16,13 +15,25 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Motor channel:  Back Left Motor:        "bl"
  *
  */
-public class HardwareServo
+public class Hardwares
 {
     /* Public OpMode members. */
+    public DcMotor  frontRightMotor   = null;
+    public DcMotor  backRightMotor  = null;
+    public DcMotor  frontLeftMotor    = null;
+    public DcMotor  backLeftMotor    = null;
+    public double y1;
+    public double x1;
+    public double x2;
+    public double frontRightPower;
+    public double backRightPower;
+    public double frontLeftPower;
+    public double backLeftPower;
+    public double max;
+    public double turbo;
     public Servo servo = null;
-
     public double Arm_Min = 0.1;
-    public double Arm_Max = .9;
+    public double Arm_Max = 0.9;
 
 
     /* local OpMode members. */
@@ -30,7 +41,7 @@ public class HardwareServo
     private ElapsedTime period  = new ElapsedTime();
 
     /* Constructor */
-    public HardwareServo()
+    public Hardwares()
     {
     }
 
@@ -42,9 +53,30 @@ public class HardwareServo
         hwMap = ahwMap;
 
         // Define and Initialize Motors
+        frontRightMotor   = hwMap.dcMotor.get("fr");
+        backRightMotor  = hwMap.dcMotor.get("br");
+        frontLeftMotor   = hwMap.dcMotor.get("fl");
+        backLeftMotor  = hwMap.dcMotor.get("bl");
         servo = hwMap.servo.get("servo");
 
-        servo.setPosition(0);
+
+        frontRightMotor.setDirection(DcMotor.Direction.FORWARD);
+        backRightMotor.setDirection(DcMotor.Direction.FORWARD);
+        frontLeftMotor.setDirection(DcMotor.Direction.REVERSE);// Set to REVERSE to normalize movement
+        backLeftMotor.setDirection(DcMotor.Direction.REVERSE);// Set to REVERSE to normalize movement
+
+        // Set all motors to zero power
+        frontRightMotor.setPower(0);
+        backRightMotor.setPower(0);
+        frontLeftMotor.setPower(0);
+        backLeftMotor.setPower(0);
+        servo.setPosition(0.0);
+
+        // Set all motors to run without encoders.
+        frontRightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        backRightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        frontLeftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        backLeftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     /***

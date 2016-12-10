@@ -62,11 +62,7 @@ public class MecanumDriveTrain extends LinearOpMode
 {
 
     /* Declare OpMode members. */
-    HardwareMecanumWheels robotDrive           = new HardwareMecanumWheels();   // Use a Mecanum Drive Train's hardware
-    HardwareColorSensor colorSensor = new HardwareColorSensor();
-    HardwareServo servo = new HardwareServo ();
-    HardwareOpticalDistanceSensor distanceSensor = new HardwareOpticalDistanceSensor();
-    HardwareBrazo brazo = new HardwareBrazo();
+    Hardwares hws = new Hardwares ();
 
     @Override
     public void runOpMode() throws InterruptedException
@@ -75,13 +71,7 @@ public class MecanumDriveTrain extends LinearOpMode
          /* Initialize the hardware variables.
          * The init() method of the hardware class does all the work here
          */
-        robotDrive.init(hardwareMap);
-        colorSensor.init(hardwareMap);
-        servo.init(hardwareMap);
-        distanceSensor.init(hardwareMap);
-        brazo.init(hardwareMap);
-
-        colorSensor.colorSensor.enableLed(colorSensor.bLedOn);
+        hws.init(hardwareMap);
 
         // Send telemetry message to signify robot waiting;
         telemetry.addData ("Adry: Adry es la mejor del universo", "saul: no, no lo es");
@@ -92,105 +82,67 @@ public class MecanumDriveTrain extends LinearOpMode
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive())
         {
-           colorSensor.bCurrState = gamepad1.y;
-
-            if ((colorSensor.bCurrState == true) && (colorSensor.bCurrState != colorSensor.bPrevState))  {
-
-                // button is transitioning to a pressed state. So Toggle LED
-                colorSensor.bLedOn = !colorSensor.bLedOn;
-                colorSensor.colorSensor.enableLed(colorSensor.bLedOn);
-            }
-
-            // update previous state variable.
-            colorSensor.bPrevState = colorSensor.bCurrState;
-
-            // convert the RGB values to HSV values.
-            Color.RGBToHSV(colorSensor.colorSensor.red() * 8, colorSensor.colorSensor.green() * 8, colorSensor.colorSensor.blue() * 8, colorSensor.hsvValues);
-
-            telemetry.addData("LED", colorSensor.bLedOn ? "On" : "Off");
-            telemetry.addData("Clear", colorSensor.colorSensor.alpha());
-            telemetry.addData("Red  ", colorSensor.colorSensor.red());
-            telemetry.addData("Green", colorSensor.colorSensor.green());
-            telemetry.addData("Blue ", colorSensor.colorSensor.blue());
-            telemetry.addData("Hue", colorSensor.hsvValues[0]);
-
-            telemetry.addData("Raw",    distanceSensor.odsSensor.getRawLightDetected());
-            telemetry.addData("Normal", distanceSensor.odsSensor.getLightDetected());
-
-            telemetry.update();
-
-
             // change the background color to match the color detected by the RGB sensor.
             // pass a reference to the hue, saturation, and value array as an argument
             // to the HSVToColor method.
-            colorSensor.relativeLayout.post(new Runnable() {
-                public void run() {
-
-                    colorSensor.relativeLayout.setBackgroundColor(Color.HSVToColor(0xff, colorSensor.values));
-                }
-            });
 
             if (gamepad1.a){
-                servo.servo.setPosition(servo.Arm_Max);
+                hws.servo.setPosition(hws.Arm_Max);
             }
             else if (gamepad1.x){
-                servo.servo.setPosition(servo.Arm_Min);
+                hws.servo.setPosition(hws.Arm_Min);
             }
 
             //Sets the turbo mode for the motors to normal when the right bumper is not pressed
             // or to max speed (turbo) when it is pressed
             if (gamepad1.right_bumper)
             {
-                robotDrive.turbo = 1;
+                hws.turbo = 1;
             }
             else
-                robotDrive.turbo = .2;
+                hws.turbo = .2;
             // Sets the joystick values to variables for better math understanding
             // The Y axis goes
-            robotDrive.y1  = gamepad1.left_stick_y;
-            robotDrive.x1  = gamepad1.left_stick_x;
-            robotDrive.x2  = gamepad1.right_stick_x;
+            hws.y1  = gamepad1.left_stick_y;
+            hws.x1  = gamepad1.left_stick_x;
+            hws.x2  = gamepad1.right_stick_x;
 
             // sets the math necessary to control the motors to variables
             // The left stick controls the axial movement
             // The right sick controls the rotation
-            robotDrive.frontRightPower     = robotDrive.y1 - robotDrive.x2 - robotDrive.x1;
-            robotDrive.backRightPower      = robotDrive.y1 - robotDrive.x2 + robotDrive.x1;
-            robotDrive.frontLeftPower      = robotDrive.y1 + robotDrive.x2 + robotDrive.x1;
-            robotDrive.backLeftPower       = robotDrive.y1 + robotDrive.x2 - robotDrive.x1;
+            hws.frontRightPower     = hws.y1 - hws.x2 - hws.x1;
+            hws.backRightPower      = hws.y1 - hws.x2 + hws.x1;
+            hws.frontLeftPower      = hws.y1 + hws.x2 + hws.x1;
+            hws.backLeftPower       = hws.y1 + hws.x2 - hws.x1;
 
             // Normalize the values so neither exceed +/- 1.0
-            robotDrive.max =  Math.max(Math.abs(robotDrive.frontRightPower), Math.max(Math.abs(robotDrive.backRightPower),
-                    Math.max(Math.abs(robotDrive.frontLeftPower), Math.abs(robotDrive.backLeftPower))));
-            if (robotDrive.max > 1.0)
+            hws.max =  Math.max(Math.abs(hws.frontRightPower), Math.max(Math.abs(hws.backRightPower),
+                    Math.max(Math.abs(hws.frontLeftPower), Math.abs(hws.backLeftPower))));
+            if (hws.max > 1.0)
             {
-                robotDrive.frontRightPower     /= robotDrive.max;
-                robotDrive.backRightPower      /= robotDrive.max;
-                robotDrive.frontLeftPower      /= robotDrive.max;
-                robotDrive.backLeftPower       /= robotDrive.max;
+                hws.frontRightPower     /= hws.max;
+                hws.backRightPower      /= hws.max;
+                hws.frontLeftPower      /= hws.max;
+                hws.backLeftPower       /= hws.max;
             }
 
             // sets the speed for the motros with the turbo multiplier
-            robotDrive.frontRightPower     *= robotDrive.turbo;
-            robotDrive.backRightPower      *= robotDrive.turbo;
-            robotDrive.frontLeftPower      *= robotDrive.turbo;
-            robotDrive.backLeftPower       *= robotDrive.turbo;
+            hws.frontRightPower     *= hws.turbo;
+            hws.backRightPower      *= hws.turbo;
+            hws.frontLeftPower      *= hws.turbo;
+            hws.backLeftPower       *= hws.turbo;
 
-            robotDrive.frontRightMotor.setPower(robotDrive.frontRightPower);
-            robotDrive.backRightMotor.setPower(robotDrive.backRightPower);
-            robotDrive.frontLeftMotor.setPower(robotDrive.frontLeftPower);
-            robotDrive.backLeftMotor.setPower(robotDrive.backLeftPower);
+            hws.frontRightMotor.setPower(hws.frontRightPower);
+            hws.backRightMotor.setPower(hws.backRightPower);
+            hws.frontLeftMotor.setPower(hws.frontLeftPower);
+            hws.backLeftMotor.setPower(hws.backLeftPower);
 
             // Send telemetry message to signify robot running;
             telemetry.update();
 
             // Pause for metronome tick.  40 mS each cycle = update 25 times a second.
-            robotDrive.waitForTick(40);
+            hws.waitForTick(40);
         }
     }
-    public void DriveForwardDistance (double power, int distance){
-        brazo.brazo.setMode(DcMotorController.RunMode.);
 
-
-    }
 }
