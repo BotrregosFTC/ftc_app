@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -22,6 +23,13 @@ public class Hardwares
     public DcMotor  backRightMotor  = null;
     public DcMotor  frontLeftMotor    = null;
     public DcMotor  backLeftMotor    = null;
+    public Servo servoR = null;
+    public Servo servoL = null;
+    public DcMotor elevador = null;
+    public DcMotor disparador = null;
+    public DcMotor PL = null;
+    public DcMotor PR = null;
+
     public double y1;
     public double x1;
     public double x2;
@@ -31,7 +39,6 @@ public class Hardwares
     public double backLeftPower;
     public double max;
     public double turbo;
-    public Servo servo = null;
     public double Arm_Min = 0.1;
     public double Arm_Max = 0.9;
 
@@ -57,26 +64,44 @@ public class Hardwares
         backRightMotor  = hwMap.dcMotor.get("br");
         frontLeftMotor   = hwMap.dcMotor.get("fl");
         backLeftMotor  = hwMap.dcMotor.get("bl");
-        servo = hwMap.servo.get("servo");
+        servoL = hwMap.servo.get("sl");
+        servoR = hwMap.servo.get("sr");
+        elevador = hwMap.dcMotor.get("elev");
+        disparador = hwMap.dcMotor.get("disp");
+        PL = hwMap.dcMotor.get("pl");
+        PR = hwMap.dcMotor.get("pr");
 
 
         frontRightMotor.setDirection(DcMotor.Direction.FORWARD);
         backRightMotor.setDirection(DcMotor.Direction.FORWARD);
         frontLeftMotor.setDirection(DcMotor.Direction.REVERSE);// Set to REVERSE to normalize movement
         backLeftMotor.setDirection(DcMotor.Direction.REVERSE);// Set to REVERSE to normalize movement
+        elevador.setDirection(DcMotor.Direction.FORWARD);// Set to REVERSE to normalize movement
+        disparador.setDirection(DcMotor.Direction.FORWARD);// Set to REVERSE to normalize movement
+        PL.setDirection(DcMotor.Direction.FORWARD);
+        PR.setDirection(DcMotor.Direction.REVERSE);// Set to REVERSE to normalize movement
 
         // Set all motors to zero power
         frontRightMotor.setPower(0);
         backRightMotor.setPower(0);
         frontLeftMotor.setPower(0);
         backLeftMotor.setPower(0);
-        servo.setPosition(0.0);
+        servoL.setPosition(0.0);
+        servoR.setPosition(0.0);
+        elevador.setPower(0);
+        disparador.setPower(0);
+        PL.setPower(0);
+        PR.setPower(0);
 
         // Set all motors to run without encoders.
         frontRightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         backRightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         frontLeftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         backLeftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        elevador.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        disparador.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        PL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        PR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     /***
