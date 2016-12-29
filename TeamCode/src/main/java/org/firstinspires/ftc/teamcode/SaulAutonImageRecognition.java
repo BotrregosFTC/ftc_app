@@ -12,6 +12,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+
 
 import java.util.IdentityHashMap;
 
@@ -19,6 +21,7 @@ import java.util.IdentityHashMap;
  * Created by saulo on 12/10/2016.
  */
 @TeleOp(name="SaulAutonImageRecognition")
+@Disabled
 public class SaulAutonImageRecognition extends LinearOpMode {
 
     //Hardwares robot = new Hardwares ();

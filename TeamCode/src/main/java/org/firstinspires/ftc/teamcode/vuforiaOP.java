@@ -13,6 +13,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+
 
 import java.util.LinkedHashMap;
 
@@ -20,6 +22,7 @@ import java.util.LinkedHashMap;
  * Created by saulo on 12/10/2016.
  */
 @TeleOp(name="vuforia tutorial")
+@Disabled
 public class vuforiaOP extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {

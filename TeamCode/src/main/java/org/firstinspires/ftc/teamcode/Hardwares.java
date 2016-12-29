@@ -86,8 +86,8 @@ public class Hardwares
         backRightMotor.setPower(0);
         frontLeftMotor.setPower(0);
         backLeftMotor.setPower(0);
-        servoL.setPosition(0.0);
-        servoR.setPosition(0.0);
+        servoL.setPosition(0.1);
+        servoR.setPosition(0.9);
         elevador.setPower(0);
         disparador.setPower(0);
         PL.setPower(0);
