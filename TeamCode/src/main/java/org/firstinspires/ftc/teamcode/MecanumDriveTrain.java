@@ -73,10 +73,8 @@ public class MecanumDriveTrain extends LinearOpMode
          */
         hws.init(hardwareMap);
 
-        double position = 0.0;
-        double positionSR = 0.0;
-        double positionSL = 0.0;
-
+        double velDisp = 0.0;
+        double positionS = 0.0;
 
         // Send telemetry message to signify robot waiting;
         telemetry.addData ("Adry: Adry es la mejor del universo", "saul: no, no lo es");
@@ -93,58 +91,16 @@ public class MecanumDriveTrain extends LinearOpMode
 
             if (gamepad2.x)
             {
-                position = 1.0;
+                velDisp = 1.0;
 
             }
-            else if (gamepad2.b)
+            else
             {
-                position = -0.15;
-            } else
-            {
-                position = 0.0;
+                velDisp = 0.0;
             }
 
-            telemetry.addData("disparador: ", position) ;
-            hws.disparador.setPower(position);
-
-
-            //para elevar la pelota grande
-            {
-                double elevadorDerecho = gamepad2.right_stick_y;
-                double elevadorIzquierdo = gamepad2.left_stick_y;
-                double direccionDerecho = 0;
-                double direccionIzquierdo =0 ;
-
-
-                if ( Math.abs(gamepad2.right_stick_y)> .07);
-                {
-                    direccionDerecho = elevadorDerecho;
-                }
-
-                if ( Math.abs(gamepad2.left_stick_y)> .07);
-                {
-                    direccionIzquierdo = elevadorIzquierdo;
-                }
-
-                if ( Math.abs(gamepad2.right_stick_y)< .07);
-                {
-                    direccionDerecho = direccionDerecho;
-                }
-
-                if ( Math.abs(gamepad2.left_stick_y)< .07);
-                {
-                    direccionIzquierdo= direccionIzquierdo;
-                }
-
-
-                telemetry.addData("elevador telescopico derecho: ", direccionDerecho);
-                telemetry.addData("elevador telescopico izquierdo: ", direccionIzquierdo);
-
-                hws.PL.setPower(direccionIzquierdo);
-                hws.PR.setPower(direccionDerecho);
-
-            }
-
+            telemetry.addData("disparador: ", velDisp) ;
+            hws.disparador.setPower(velDisp);
 
             double banda_arriba = gamepad1.right_trigger;
             double banda_abajo = -gamepad1.left_trigger;
@@ -169,19 +125,15 @@ public class MecanumDriveTrain extends LinearOpMode
 
             if (gamepad2.right_bumper)
             {
-                positionSL = .9;
-                positionSR = .1;
+                positionS = .9;
             }
             else if (gamepad2.left_bumper)
             {
-                positionSL = .1;
-                positionSR = .9;
+                positionS = .5;
             }
 
-            telemetry.addData("servoR: ", positionSR) ;
-            telemetry.addData("servoL: ", positionSL) ;
-            hws.servoL.setPosition(positionSL);
-            hws.servoR.setPosition(positionSR);
+            telemetry.addData("servo: ", positionS) ;
+            hws.servo.setPosition(positionS);
 
             //Sets the turbo mode for the motors to normal when the right bumper is not pressed
             // or to max speed (turbo) when it is pressed
@@ -190,7 +142,7 @@ public class MecanumDriveTrain extends LinearOpMode
                 hws.turbo = 1;
             }
             else
-                hws.turbo = .5;
+                hws.turbo = 1;
             // Sets the joystick values to variables for better math understanding
             // The Y axis goes
             hws.y1  = gamepad1.left_stick_y;
