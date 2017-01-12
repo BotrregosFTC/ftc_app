@@ -89,7 +89,11 @@ public class MecanumDriveTrain extends LinearOpMode
             // pass a reference to the hue, saturation, and value array as an argument
             // to the HSVToColor method.
 
-            if (gamepad2.x)
+
+            hws.disparador.setPower(gamepad2.right_trigger);
+            telemetry.addData("disparando", "");
+
+            if (gamepad2.right_trigger > .01)
             {
                 velDisp = 1.0;
 
@@ -125,11 +129,11 @@ public class MecanumDriveTrain extends LinearOpMode
 
             if (gamepad2.right_bumper)
             {
-                positionS = .9;
+                positionS = .3;
             }
             else if (gamepad2.left_bumper)
             {
-                positionS = .5;
+                positionS = 0.0;
             }
 
             telemetry.addData("servo: ", positionS) ;
@@ -152,10 +156,10 @@ public class MecanumDriveTrain extends LinearOpMode
             // sets the math necessary to control the motors to variables
             // The left stick controls the axial movement
             // The right sick controls the rotation
-            hws.frontRightPower     = hws.y1 - hws.x2 - hws.x1;
-            hws.backRightPower      = hws.y1 - hws.x2 + hws.x1;
-            hws.frontLeftPower      = hws.y1 + hws.x2 + hws.x1;
-            hws.backLeftPower       = hws.y1 + hws.x2 - hws.x1;
+            hws.frontRightPower     = hws.y1 + hws.x2 + hws.x1;
+            hws.backRightPower      = hws.y1 + hws.x2 - hws.x1;
+            hws.frontLeftPower      = hws.y1 - hws.x2 - hws.x1;
+            hws.backLeftPower       = hws.y1 - hws.x2 +  hws.x1;
 
             // Normalize the values so neither exceed +/- 1.0
             hws.max =  Math.max(Math.abs(hws.frontRightPower), Math.max(Math.abs(hws.backRightPower),

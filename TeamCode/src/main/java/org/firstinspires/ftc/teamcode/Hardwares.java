@@ -62,19 +62,19 @@ public class Hardwares
         elevador = hwMap.dcMotor.get("elev");
         disparador = hwMap.dcMotor.get("disp");
 
-        frontRightMotor.setDirection(DcMotor.Direction.REVERSE);
-        backRightMotor.setDirection(DcMotor.Direction.FORWARD);
+        frontRightMotor.setDirection(DcMotor.Direction.FORWARD);
+        backRightMotor.setDirection(DcMotor.Direction.REVERSE);
         frontLeftMotor.setDirection(DcMotor.Direction.REVERSE);// Set to REVERSE to normalize movement
         backLeftMotor.setDirection(DcMotor.Direction.FORWARD);// Set to REVERSE to normalize movement
         elevador.setDirection(DcMotor.Direction.FORWARD);// Set to REVERSE to normalize movement
-        disparador.setDirection(DcMotor.Direction.FORWARD);// Set to REVERSE to normalize movement
+        disparador.setDirection(DcMotor.Direction.REVERSE);// Set to REVERSE to normalize movement
 
         // Set all motors to zero power
         frontRightMotor.setPower(0);
         backRightMotor.setPower(0);
         frontLeftMotor.setPower(0);
         backLeftMotor.setPower(0);
-        servo.setPosition(0.5);
+        servo.setPosition(0.0);
 
         // Set all motors to run without encoders.
         frontRightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
