@@ -68,6 +68,7 @@ import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
  */
 
 @Autonomous(name="AutoEncoders")
+@Disabled
 public class AutoEncoders extends LinearOpMode {
 
     /* Declare OpMode members. */

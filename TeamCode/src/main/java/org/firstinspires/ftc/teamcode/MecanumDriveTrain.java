@@ -129,7 +129,7 @@ public class MecanumDriveTrain extends LinearOpMode
 
             if (gamepad2.right_bumper)
             {
-                positionS = .3;
+                positionS = .25;
             }
             else if (gamepad2.left_bumper)
             {
