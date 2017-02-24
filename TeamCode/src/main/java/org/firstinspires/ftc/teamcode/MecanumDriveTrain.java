@@ -57,7 +57,7 @@ import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
  */
 
 @TeleOp(name="MecanumDriveTrain")
-//@Disabled
+@Disabled
 public class MecanumDriveTrain extends LinearOpMode
 {
 
